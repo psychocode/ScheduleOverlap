@@ -6,6 +6,7 @@
     <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="css/main.css"/>
     <script src="bower_components/angularjs/angular.js"></script>
+    <script src="js/underscore.js"></script>
     <script src="js/main.js"></script>
 </head>
 <body ng-app="app">
@@ -16,19 +17,21 @@
  </nav>
 
 <div class="container" ng-controller="main as ctrl">
-    <label for="shiftText">Open Shifts</label>
+    <label for="shiftText">Open Shifts (copy and paste from facebook)</label>
+    <p>If it's red It overlaps. If it's blue it's just a shift.</p>
 
     <textarea id="shiftText" class="form-control" ng-model="ctrl.a" ng-change="ctrl.match(ctrl.a)"></textarea>
     <div class="panel panel-success">
         <div class="panel-body">
         <div class="row" ng-repeat="match in ctrl.matches">
-            <div class="col-xs-12" ng-bind="match.name + ' ' + match.start + '-' + match.end"></div>
+            <div class="col-xs-12" ng-bind="match.string"></div>
             <div class="col-xs-12">
                 <div class="progress">
                     <div class="progress-bar" ng-style="{ 'width': ctrl.getOffsetPercent(match) + '%' }" style="visibility: hidden;"></div>
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': ctrl.getTimePercent(match) + '%' }"></div>
+                    <div class="progress-bar" ng-class="{'progress-bar-danger' : ctrl.checkOverlap(match)}"  role="progressbar" ng-style="{ 'width': ctrl.getTimePercent(match) + '%' }"></div>
+
                 </div>
-            </div>
+             </div>
         </div>
         </div>
     </div>
