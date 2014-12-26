@@ -13,6 +13,6 @@ To use this simply copy a list of items into the text box. It supports many form
 * -Bio 10D 15:20-18:30
 * -Bio 10E 18:20-21:30
 
-
+![Shift Overlap](/overlap.PNG)
 
 Then it will display the cooresponding graph of the shifts.
