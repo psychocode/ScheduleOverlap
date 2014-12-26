@@ -2,7 +2,7 @@
  * Created by Cody on 12/25/2014.
  */
 function MainController() {
-    this.matcher = /^\W*([\/\s\w]+\w)[\W\s-.]+(\d+:\d+\w*[\W\s-.]+\d+:\d+\w*)/mg;
+    this.matcher = /^\W*([\/\s\w]+\w)[\W\s-.]+(\d+:\d+\w*[\W\s-.]*(?:\s*to\s*)*\d+:\d+\w*)/mgi;
     this.matches = [];
     this.match = function(str) {
         var m;
@@ -15,7 +15,11 @@ function MainController() {
                 this.matcher.lastIndex++;
             }
 
-            times = m[2].replace(" ", "").split("-");
+            var timesStr = m[2].replace(/\s/g, "");
+            times = (timesStr.toLowerCase().indexOf("to") > -1) ?
+                timesStr.split(/to/i) :
+                timesStr.split("-");
+
             start = this.getTimeNumber(times[0]);
             end = this.getTimeNumber(times[1]);
 
