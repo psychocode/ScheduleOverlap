@@ -2,29 +2,27 @@
  * Created by Cody on 12/25/2014.
  */
 function MainController() {
-    this.matcher = /^\W*([\/\s\w]+\w)[\W\s-.]+(\d+:\d+\w*[\W\s-.]*(?:\s*to\s*)*\d+:\d+\w*)/mgi;
+    "use strict";
+    this.matcher = /^\W*([\/\s\w]+\w)[\W.]+(\d+:\d+\w*[\W.]*(?:\s*to\s*)*\d+:\d+\w*)/mgi;
     this.matches = [];
-    this.match = function(str) {
-        var m;
+    this.match = function (str) {
+        var m, times, start, end, timesStr;
         this.matches = [];
-        var times;
-        var start;
-        var end;
         while ((m = this.matcher.exec(str)) !== null) {
             if (m.index === this.matcher.lastIndex) {
                 this.matcher.lastIndex++;
             }
 
-            var timesStr = m[2].replace(/\s/g, "");
+            timesStr = m[2].replace(/\s/g, "");
             times = (timesStr.toLowerCase().indexOf("to") > -1) ?
-                timesStr.split(/to/i) :
-                timesStr.split("-");
+                    timesStr.split(/to/i) :
+                    timesStr.split("-");
 
             start = this.getTimeNumber(times[0]);
             end = this.getTimeNumber(times[1]);
 
-            if (start > 1800 && end < 200) end += 2400;
-            if (end < start) end += 1200;
+            if (start > 1800 && end < 200) {end += 2400; }
+            if (end < start) {end += 1200; }
 
 
             this.matches.push(
@@ -59,7 +57,7 @@ function MainController() {
             var overlaps = (match.start >= obj.start && match.start <= obj.end) ||
                 (obj.start >= match.start && obj.start <= match.end);
 
-            return (memo) ? (memo) : (overlaps);
+            return memo || overlaps;
         }, false);
     };
 
@@ -68,9 +66,9 @@ function MainController() {
         return match.start / 2510 * 100;
     };
 
-    this.getTimePercent = function(match)
+    this.getTimePercent = function (match)
     {
-        return (match.end-match.start) / 2510 * 100;
+        return (match.end - match.start) / 2510 * 100;
     };
 
 
