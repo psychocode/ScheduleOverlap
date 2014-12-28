@@ -15,14 +15,18 @@ function MainController() {
 
             timesStr = m[2].replace(/\s/g, "");
             times = (timesStr.toLowerCase().indexOf("to") > -1) ?
-                    timesStr.split(/to/i) :
-                    timesStr.split("-");
+                timesStr.split(/to/i) :
+                timesStr.split("-");
 
             start = this.getTimeNumber(times[0]);
             end = this.getTimeNumber(times[1]);
 
-            if (start > 1800 && end < 200) {end += 2400; }
-            if (end < start) {end += 1200; }
+            if (start > 1800 && end < 200) {
+                end += 2400;
+            }
+            if (end < start) {
+                end += 1200;
+            }
 
 
             this.matches.push(
@@ -38,21 +42,20 @@ function MainController() {
     };
 
     this.getTimeNumber = function (str) {
-        var time = str.replace(/(am)/gi, "");
-        var isPm = false;
-        time = time.replace(":", "");
-        if (time.toLowerCase().indexOf("pm") > -1)
-        {
+        var time, isPm, rawTimeNumber;
+
+        time = str.replace(/(am)/gi, "").replace(":", "");
+        isPm = false;
+        if (time.toLowerCase().indexOf("pm") > -1) {
             time = time.replace(/(pm)/gi, "");
             isPm = true;
         }
-        var rawTimeNumber = Number(time);
+        rawTimeNumber = Number(time);
         return isPm ? rawTimeNumber + 1200 : rawTimeNumber;
     };
 
-    this.checkOverlap = function (match)
-    {
-        var otherMatches =_.without(this.matches, match);
+    this.checkOverlap = function (match) {
+        var otherMatches = _.without(this.matches, match);
         return _.reduce(otherMatches, function (memo, obj) {
             var overlaps = (match.start >= obj.start && match.start <= obj.end) ||
                 (obj.start >= match.start && obj.start <= match.end);
@@ -61,13 +64,11 @@ function MainController() {
         }, false);
     };
 
-    this.getOffsetPercent = function (match)
-    {
+    this.getOffsetPercent = function (match) {
         return match.start / 2510 * 100;
     };
 
-    this.getTimePercent = function (match)
-    {
+    this.getTimePercent = function (match) {
         return (match.end - match.start) / 2510 * 100;
     };
 
@@ -77,6 +78,6 @@ function MainController() {
 
 var app = angular.module("app", []);
 
-app.controller("main", [function() {
+app.controller("main", [function () {
     return new MainController();
 }]);
